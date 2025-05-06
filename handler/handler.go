@@ -21,13 +21,13 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid request"})
+		c.JSON(400, gin.H{"error": "Неправильный запрос"})
 		return
 	}
 
 	user, err := h.service.Register(req.Username, req.Password)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Registration failed"})
+		c.JSON(500, gin.H{"error": "Ошибка регистрации"})
 		return
 	}
 
@@ -42,13 +42,13 @@ func (h *Handler) CreateNote(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{"error": "Invalid request"})
+		c.JSON(400, gin.H{"error": "Ошибка запроса"})
 		return
 	}
 
 	note, err := h.service.CreateNote(req.UserID, req.Title, req.Content)
 	if err != nil {
-		c.JSON(500, gin.H{"error": "Failed to create note"})
+		c.JSON(500, gin.H{"error": "Ошибка при создании заметки"})
 		return
 	}
 
