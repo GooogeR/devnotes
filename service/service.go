@@ -1,6 +1,7 @@
 package service
 
 import (
+	"devnotes/db"
 	"devnotes/model"
 	"devnotes/storage"
 
@@ -53,4 +54,24 @@ func (s *Service) GetNotesByUserID(userID string) []model.Note {
 		}
 	}
 	return userNotes
+}
+
+func (s *Service) UpdateNote(noteID, title, content string) (model.Note, error) {
+	var note model.Note
+	if err := db.DB.First(&note, "id = ?", noteID).Error; err != nil {
+		return model.Note{}, err
+	}
+
+	note.Title = title
+	note.Content = content
+
+	if err := db.DB.Save(&note).Error; err != nil {
+		return model.Note{}, err
+	}
+
+	return note, nil
+}
+
+func (s *Service) DeleteNote(noteID string) error {
+	return db.DB.Delete(&model.Note{}, "id = ?", noteID).Error
 }
